@@ -18,4 +18,14 @@ Function submit-VTHash($VThash)
 }
 
 ## Example hash
-    $hash = "Initial
+    $hash = "ba4038fd20e474c047be8aad5bfacdb1bfc1ddbe12f803f473b7918d8d819436" 
+
+## Submit the hash to the function
+    $VTresult = submit-VTHash($hash)
+
+## Display results
+    Write-Host -f Cyan "Resource    : " -NoNewline; Write-Host $VTresult.resource
+    Write-Host -f Cyan "Scan date   : " -NoNewline; Write-Host $VTresult.scan_date
+    Write-Host -f Cyan "Positives   : " -NoNewline; Write-Host $VTresult.positives
+    Write-Host -f Cyan "Total Scans : " -NoNewline; Write-Host $VTresult.total
+    Write-Host -f Cyan "Permalink   : " -NoNewline; Write-Host $VTresult.permalink
