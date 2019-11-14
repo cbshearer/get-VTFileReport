@@ -1,2 +1,2 @@
 # get-VTFileReport
-Get VirusTotal report for a given hash.
+Use PowerShell to get VirusTotal report for a given hash.
