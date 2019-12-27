@@ -25,7 +25,7 @@ Function submit-VTHash($VThash)
     foreach ($hash in $samples)
         {
             ## Set sleep value to respect API limits (4/min) - https://developers.virustotal.com/v3.0/reference#public-vs-premium-api
-                if ($samples.count -ge 4) {$sleepSeconds = 15}
+                if ($samples.count -ge 4) {$sleepTime = 15}
                 else {$sleepTime = 1 }
 
             $VTresult = submit-VTHash($hash)
