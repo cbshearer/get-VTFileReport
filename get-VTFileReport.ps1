@@ -42,6 +42,5 @@ Function submit-VTHash($VThash)
                 Write-Host -f Cyan "Total Scans : " -NoNewline; Write-Host $VTresult.total
                 Write-Host -f Cyan "Permalink   : " -NoNewline; Write-Host $VTresult.permalink
                 
-
                 Start-Sleep -seconds $sleepTime
         }
