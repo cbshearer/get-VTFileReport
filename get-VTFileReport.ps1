@@ -30,11 +30,15 @@ Function submit-VTHash($VThash)
 
             $VTresult = submit-VTHash($hash)
 
+            ## Color positive results
+                if ($VTresult.positives -ge 1) {$fg = "Magenta"}
+                else {$fg = (get-host).ui.rawui.ForegroundColor}
+
             ## Display results
                 Write-Host "==================="
                 Write-Host -f Cyan "Resource    : " -NoNewline; Write-Host $VTresult.resource
                 Write-Host -f Cyan "Scan date   : " -NoNewline; Write-Host $VTresult.scan_date
-                Write-Host -f Cyan "Positives   : " -NoNewline; Write-Host $VTresult.positives
+                Write-Host -f Cyan "Positives   : " -NoNewline; Write-Host $VTresult.positives -f $fg
                 Write-Host -f Cyan "Total Scans : " -NoNewline; Write-Host $VTresult.total
                 Write-Host -f Cyan "Permalink   : " -NoNewline; Write-Host $VTresult.permalink
                 
