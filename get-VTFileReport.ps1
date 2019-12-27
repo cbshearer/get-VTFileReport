@@ -17,15 +17,27 @@ Function submit-VTHash($VThash)
     return $vtResult
 }
 
-## Example hash
-    $hash = "ba4038fd20e474c047be8aad5bfacdb1bfc1ddbe12f803f473b7918d8d819436" 
+## Samples
+    $samples = @("ba4038fd20e474c047be8aad5bfacdb1bfc1ddbe12f803f473b7918d8d819436",
+    "614ca7b627533e22aa3e5c3594605dc6fe6f000b0cc2b845ece47ca60673ec7f")
 
-## Submit the hash to the function
-    $VTresult = submit-VTHash($hash)
+## Loop through hashes
+    foreach ($hash in $samples)
+        {
+            ## Set sleep value to respect API limits (4/min) - https://developers.virustotal.com/v3.0/reference#public-vs-premium-api
+                if ($samples.count -ge 4) {$sleepSeconds = 15}
+                else {$sleepTime = 1 }
 
-## Display results
-    Write-Host -f Cyan "Resource    : " -NoNewline; Write-Host $VTresult.resource
-    Write-Host -f Cyan "Scan date   : " -NoNewline; Write-Host $VTresult.scan_date
-    Write-Host -f Cyan "Positives   : " -NoNewline; Write-Host $VTresult.positives
-    Write-Host -f Cyan "Total Scans : " -NoNewline; Write-Host $VTresult.total
-    Write-Host -f Cyan "Permalink   : " -NoNewline; Write-Host $VTresult.permalink
+            $VTresult = submit-VTHash($hash)
+
+            ## Display results
+                Write-Host "==================="
+                Write-Host -f Cyan "Resource    : " -NoNewline; Write-Host $VTresult.resource
+                Write-Host -f Cyan "Scan date   : " -NoNewline; Write-Host $VTresult.scan_date
+                Write-Host -f Cyan "Positives   : " -NoNewline; Write-Host $VTresult.positives
+                Write-Host -f Cyan "Total Scans : " -NoNewline; Write-Host $VTresult.total
+                Write-Host -f Cyan "Permalink   : " -NoNewline; Write-Host $VTresult.permalink
+                
+
+                Start-Sleep -seconds $sleepTime
+        }
