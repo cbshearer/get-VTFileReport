@@ -8,4 +8,4 @@
 # To use this script from the CLI there is only 1 mandatory paramteter:   
 - -h is for hash  
 # Example:  
-> .\get-VTFileReport-2.ps1 -h ba4038fd20e474c047be8aad5bfacdb1bfc1ddbe12f803f473b7918d8d819436
+> .\get-VTFileReport.ps1 -h ba4038fd20e474c047be8aad5bfacdb1bfc1ddbe12f803f473b7918d8d819436
