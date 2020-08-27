@@ -2,28 +2,28 @@
 
 - Use PowerShell to get VirusTotal report for an array of hashes.  
 - This API is rate limited to 4 submissions per minute.  
-- API documentation: https://developers.virustotal.com/reference#file-report
+- VirusTotal [API documentation](https://developers.virustotal.com/reference#file-report)
 
 ## To use the module
 
-- Import the module
+- Import the module.
 
 ```PowerShell
 PS C:\temp> Import-Module .\get-VTFileReport.psm1
 ```
 
 - If you want to install the module for long-term use
-  - See Microsoft documentation: https://docs.microsoft.com/en-us/powershell/scripting/developer/module/installing-a-powershell-module?view=powershell-7
+  - See [Microsoft documentation](https://docs.microsoft.com/en-us/powershell/scripting/developer/module/installing-a-powershell-module?view=powershell-7).
   - Shortcut - just copy to its own folder in this location: $Env:ProgramFiles\WindowsPowerShell\Modules
 
 ```PowerShell
 PS C:\temp> copy .\get-VTFileReport.psm1 $Env:ProgramFiles\WindowsPowerShell\Modules\get-VTFileReport\get-VTFileReport.psm1
 ```
 
-- Line 14: Enter your API key (get your own VT API key here: https://www.virustotal.com/gui/join-us).  
+- Line 14: Enter your API key 
+  - Sign up for your own [VirusTotal API key](https://www.virustotal.com/gui/join-us). 
 - Mandatory parameter:
-
-  - -h is for hash  
+  - -h is for hash.
   - Comma separated for multiples.
 - Examples:  
 
