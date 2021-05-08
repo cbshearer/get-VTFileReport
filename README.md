@@ -35,8 +35,8 @@ get-VTFileReport -h 100F6AB2737F1AF0746D6650D9DDD0E4B56A9A8583DD087DF64DECA62E77
 ## The following information is returned on the screen
 
 - Resource: the sha256 of what was submitted.
-- Scan date: last date the resource was scanned
-- Positives: Number of positive results - if there are 1 or more positives, the number is returned in magenta.  
-- Total: Number of engines that have scanned the file
-- Permalink: Link to VT to see more information
-- Percent: Percent of positive results. If there are 1 or more positives, the number is returned in magenta.
+- Scan date: last date the resource was scanned.
+- Positives: Number of positive results.  
+- Total: Number of engines that have scanned the file.
+- Permalink: Link to VT to see more information.
+- Percent: Percent of positive results.
