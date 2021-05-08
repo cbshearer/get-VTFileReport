@@ -10,7 +10,7 @@ Function get-VTFileReport
         param ([Parameter(Mandatory=$true)] [array]$h)
 
     ## Get your own VT API key here: https://www.virustotal.com/gui/join-us
-        $VTApiKey = "xxxxxxxxxxxxxx"
+        $VTApiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
     ## Set TLS 1.2
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -29,28 +29,19 @@ Function get-VTFileReport
                 ## Submit the hash!
                     $VTbody = @{resource = $hash; apikey = $VTApiKey}
                     $VTresult = Invoke-RestMethod -Method GET -Uri 'https://www.virustotal.com/vtapi/v2/file/report' -Body $VTbody
-                
-                ## Color positive results
-                    if ($VTresult.positives -ge 1) {
-                        $fore = "Magenta"
-                        $VTpct = (($VTresult.positives) / ($VTresult.total)) * 100
-                        $VTpct = [math]::Round($VTpct,2)
-                    }
-                    else {
-                        $fore = (get-host).ui.rawui.ForegroundColor
-                        $VTpct = 0
-                    }
 
-                ## Display results
-                    Write-Host "==================="
-                    Write-Host -f Cyan "Resource    : " -NoNewline; Write-Host $VTresult.resource
-                    Write-Host -f Cyan "Scan date   : " -NoNewline; Write-Host $VTresult.scan_date
-                    Write-Host -f Cyan "Positives   : " -NoNewline; Write-Host $VTresult.positives -f $fore
-                    Write-Host -f Cyan "Total Scans : " -NoNewline; Write-Host $VTresult.total
-                    Write-Host -f Cyan "Permalink   : " -NoNewline; Write-Host $VTresult.permalink
-                    Write-Host -f Cyan "Percent     : " -NoNewline; Write-Host $VTpct "%" -f $fore
+                ## Custom Object for data output
+                    [PSCustomObject]@{
+                        resource    = $VTresult.resource
+                        scan_date   = $VTresult.scan_date
+                        positives   = $VTresult.positives
+                        total       = $VTresult.total
+                        permalink   = $VTresult.permalink
+                        percent     = $VTpct
+                    }
                     
                     Start-Sleep -seconds $sleepTime
+             
             }
     }
 
