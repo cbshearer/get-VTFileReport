@@ -1,42 +1,56 @@
-# get-VTFileReport
+## Search VirusTotal for a file hash
+## Chris Shearer
+## 26-Aug-2020
+## VirusTotal Public API: https://developers.virustotal.com/reference#file-report
 
-- Use PowerShell to get VirusTotal report for an array of hashes.  
-- This API is rate limited to 4 submissions per minute.  
-- VirusTotal [API documentation](https://developers.virustotal.com/reference#file-report)
 
-## To use the module
+Function get-VTFileReport 
+{
+    ## Accept CLI parameters
+        param ([Parameter(Mandatory=$true)] [array]$h)
 
-- Import the module.
+    ## Get your own VT API key here: https://www.virustotal.com/gui/join-us
+        $VTApiKey = "xxxxxxxxxxx"
 
-```PowerShell
-PS C:\temp> Import-Module .\get-VTFileReport.psm1
-```
+    ## Set TLS 1.2
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-- If you want to install the module for long-term use
-  - See [Microsoft documentation](https://docs.microsoft.com/en-us/powershell/scripting/developer/module/installing-a-powershell-module?view=powershell-7).
-  - Shortcut - just copy to its own folder in this location: $Env:ProgramFiles\WindowsPowerShell\Modules
+    ## Samples
+        if ($h) {$samples = $h}
+        else {write-host -f magenta "No hash found, exiting."}
 
-```PowerShell
-PS C:\temp> copy .\get-VTFileReport.psm1 $Env:ProgramFiles\WindowsPowerShell\Modules\get-VTFileReport\get-VTFileReport.psm1
-```
+    ## Loop through hashes
+        foreach ($hash in $samples)
+            {
+                ## Set sleep value to respect API limits (4/min) - https://developers.virustotal.com/v3.0/reference#public-vs-premium-api
+                    if ($samples.count -ge 4) {$sleepTime = 15}
+                    else {$sleepTime = 1 }
+                
+                ## Submit the hash!
+                    $VTbody = @{resource = $hash; apikey = $VTApiKey}
+                    $VTresult = Invoke-RestMethod -Method GET -Uri 'https://www.virustotal.com/vtapi/v2/file/report' -Body $VTbody
 
-- Line 14: Enter your API key 
-  - Sign up for your own [VirusTotal API key](https://www.virustotal.com/gui/join-us). 
-- Mandatory parameter:
-  - -h is for hash.
-  - Comma separated for multiples.
-- Examples:  
+                ## Calculate percentage if there is a result
+                    if ($VTresult.positives -ge 1) {
+                        $VTpct = (($VTresult.positives) / ($VTresult.total)) * 100
+                        $VTpct = [math]::Round($VTpct,2)
+                    }
+                    else {
+                        $VTpct = 0
+                    }
+                ## Custom Object for data output
+                    [PSCustomObject]@{
+                        resource    = $VTresult.resource
+                        scan_date   = $VTresult.scan_date
+                        positives   = $VTresult.positives
+                        total       = $VTresult.total
+                        permalink   = $VTresult.permalink
+                        percent     = $VTpct
+                    }
+                    
+                    Start-Sleep -seconds $sleepTime
+             
+            }
+    }
 
-```PowerShell
-get-VTFileReport -h ba4038fd20e474c047be8aad5bfacdb1bfc1ddbe12f803f473b7918d8d819436
-get-VTFileReport -h 100F6AB2737F1AF0746D6650D9DDD0E4B56A9A8583DD087DF64DECA62E77F65B,614ca7b627533e22aa3e5c3594605dc6fe6f000b0cc2b845ece47ca60673ec7f
-```
-
-## The following information is returned on the screen
-
-- Resource: the sha256 of what was submitted.
-- Scan date: last date the resource was scanned.
-- Positives: Number of positive results.  
-- Total: Number of engines that have scanned the file.
-- Permalink: Link to VT to see more information.
-- Percent: Percent of positive results.
+    Export-ModuleMember -Function get-VTFileReport
