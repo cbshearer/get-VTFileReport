@@ -42,7 +42,9 @@ Function submit-VTHash($VThash)
                     $VTpct = [math]::Round($VTpct,2)
                 }
                 else {
-                    $fore = (get-host).ui.rawui.ForegroundColor
+                    # $fore = (get-host).ui.rawui.ForegroundColor
+                    # regarding to https://stackoverflow.com/questions/26582880/powershell-get-default-foreground-color-for-write-host
+                    $fore = [System.Console]::ForegroundColor
                     $VTpct = 0
                 }
 
